@@ -22,7 +22,11 @@ local targetPets = {
     ["Chicleteira Bicicleteira"] = true, ["The Final Sigma"] = true, ["Nyan Cat"] = true, ["Girafa Celeste"] = true,
     ["Los Bombinitos"] = true, ["Espresso Signora"] = true, ["Piccione Macchina"] = true, ["Coco Elefanto"] = true,
     ["Ballerino Lololo"] = true, ["Trigoligre Frutonni"] = true, ["Los Crocodillitos"] = true, ["Trippi Troppi Troppa Trippa"] = true,
-    ["Bulbito Bandito Traktorito"] = true, ["Los Tungtungtungcitos"] = true, ["Tukkano Bananno"] = true, ["Los Orcalitos"] = true
+    ["Bulbito Bandito Traktorito"] = true, ["Los Tungtungtungcitos"] = true, ["Tukkano Bananno"] = true, ["Los Orcalitos"] = true,
+    ["Lucky Block"] = true, ["Tob Tobi Tobi"] = true, ["Karkerkar Kurkur"] = true, ["Tracoducotulu Delapeladustuz"] = true,
+    ["Tralalita tralala"] = true, ["Job Job Job Sahur"] = true, ["Tipi Topi Taco"] = true, ["Urubini Flamenguini"] = true,
+    ["Los Matteos"] = true, ["Blackhole Goat"] = true, ["Tartaruga Cisterna"] = true, ["Dul Dul Dul"] = true, ["Bisonte Giuppitere"] = true,
+    ["Alessio"] = true, ["Sammyni Spyderini"] = true, ["Brr es Teh Patipum"] = true
 }
 
 local espEnabled = false
@@ -32,7 +36,6 @@ local function getMutationMap()
     local mutationMap = {}
     local plots = Workspace:FindFirstChild("Plots")
     if not plots then return mutationMap end
-
     for _, plot in ipairs(plots:GetChildren()) do
         local podiums = plot:FindFirstChild("AnimalPodiums")
         if podiums then
@@ -78,7 +81,6 @@ local function createESP(pet, mutationText, generationText)
     if pet:FindFirstChild("ESP_Tag") then return end
     local head = pet:FindFirstChild("Head") or pet:FindFirstChildWhichIsA("BasePart")
     if not head then return end
-
     local genValue = parseGen(generationText)
     local genColor = Color3.fromRGB(255,0,0)
     if genValue >= 1_000_000 then
@@ -88,14 +90,12 @@ local function createESP(pet, mutationText, generationText)
     elseif genValue >= 50_000 then
         genColor = Color3.fromRGB(255,165,0)
     end
-
     local bill = Instance.new("BillboardGui")
     bill.Name = "ESP_Tag"
     bill.Size = UDim2.new(0, 200, 0, 60)
     bill.StudsOffset = Vector3.new(0, 3, 0)
     bill.AlwaysOnTop = true
     bill.Parent = pet
-
     local nameLabel = Instance.new("TextLabel")
     nameLabel.Size = UDim2.new(1, 0, 0.33, 0)
     nameLabel.Position = UDim2.new(0,0,0,0)
@@ -107,7 +107,6 @@ local function createESP(pet, mutationText, generationText)
     nameLabel.TextScaled = true
     nameLabel.TextWrapped = true
     nameLabel.Parent = bill
-
     local mutationLabel = Instance.new("TextLabel")
     mutationLabel.Size = UDim2.new(1, 0, 0.33, 0)
     mutationLabel.Position = UDim2.new(0,0,0.33,0)
@@ -119,7 +118,6 @@ local function createESP(pet, mutationText, generationText)
     mutationLabel.TextScaled = true
     mutationLabel.TextWrapped = true
     mutationLabel.Parent = bill
-
     local genLabel = Instance.new("TextLabel")
     genLabel.Size = UDim2.new(1, 0, 0.33, 0)
     genLabel.Position = UDim2.new(0,0,0.66,0)
@@ -131,7 +129,6 @@ local function createESP(pet, mutationText, generationText)
     genLabel.TextScaled = true
     genLabel.TextWrapped = true
     genLabel.Parent = bill
-
     local att0 = Instance.new("Attachment", head)
     local att1 = Instance.new("Attachment", LocalPlayer.Character:WaitForChild("HumanoidRootPart"))
     local beam = Instance.new("Beam")
@@ -147,7 +144,6 @@ local function buildUI()
     if ScreenGui then ScreenGui:Destroy() end
     ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
-
     local espToggle = Instance.new("TextButton", ScreenGui)
     espToggle.Name = "ESP_Toggle"
     espToggle.Size = UDim2.new(0,120,0,30)
@@ -158,7 +154,6 @@ local function buildUI()
     espToggle.Font = Enum.Font.GothamBold
     espToggle.TextSize = 14
     Instance.new("UICorner", espToggle).CornerRadius = UDim.new(0,8)
-
     espToggle.MouseButton1Click:Connect(function()
         espEnabled = not espEnabled
         if espEnabled then
@@ -204,10 +199,8 @@ buildUI()
 
 RunService.Heartbeat:Connect(function()
     if not espEnabled then return end
-
     local mutationMap = getMutationMap()
     local bestPetObj, bestGenValue, bestMutation, bestGeneration = nil, -1, "Normal", "Unknown"
-
     for _, obj in ipairs(workspace:GetDescendants()) do
         if obj:IsA("Model") and targetPets[obj.Name] then
             local mutationText, generationText = "Normal", "Unknown"
@@ -227,13 +220,11 @@ RunService.Heartbeat:Connect(function()
             end
         end
     end
-
     for _, obj in ipairs(workspace:GetDescendants()) do
         if obj:IsA("Model") and obj:FindFirstChild("ESP_Tag") then
             obj.ESP_Tag:Destroy()
         end
     end
-
     if bestPetObj then
         createESP(bestPetObj, bestMutation, bestGeneration)
     end
