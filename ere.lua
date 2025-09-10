@@ -160,7 +160,14 @@ LocalPlayer.CharacterAdded:Connect(function()
     showCenterMessage()
 end)
 
-RunService.Heartbeat:Connect(function()
+local lastUpdate = 0
+local UPDATE_INTERVAL = 0.5
+
+RunService.Heartbeat:Connect(function(dt)
+    lastUpdate = lastUpdate + dt
+    if lastUpdate < UPDATE_INTERVAL then return end
+    lastUpdate = 0
+
     local mutationMap = getMutationMap()
     local bestPetObj, bestGenValue, bestMutation, bestGeneration = nil, -1, "Normal", "Unknown"
     for _, obj in ipairs(workspace:GetDescendants()) do
