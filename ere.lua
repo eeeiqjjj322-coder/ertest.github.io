@@ -29,9 +29,6 @@ local targetPets = {
     ["Alessio"] = true, ["Sammyni Spyderini"] = true, ["Brr es Teh Patipum"] = true
 }
 
-local espEnabled = false
-local ScreenGui
-
 local function getMutationMap()
     local mutationMap = {}
     local plots = Workspace:FindFirstChild("Plots")
@@ -140,42 +137,6 @@ local function createESP(pet, mutationText, generationText)
     beam.Parent = head
 end
 
-local function buildUI()
-    if ScreenGui then ScreenGui:Destroy() end
-    ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
-    local espToggle = Instance.new("TextButton", ScreenGui)
-    espToggle.Name = "ESP_Toggle"
-    espToggle.Size = UDim2.new(0,120,0,30)
-    espToggle.Position = UDim2.new(1,-130,0,50)
-    espToggle.BackgroundColor3 = espEnabled and Color3.fromRGB(0,150,0) or Color3.fromRGB(50,50,50)
-    espToggle.Text = espEnabled and "ESP: ON" or "ESP: OFF"
-    espToggle.TextColor3 = Color3.fromRGB(255,255,255)
-    espToggle.Font = Enum.Font.GothamBold
-    espToggle.TextSize = 14
-    Instance.new("UICorner", espToggle).CornerRadius = UDim.new(0,8)
-    espToggle.MouseButton1Click:Connect(function()
-        espEnabled = not espEnabled
-        if espEnabled then
-            espToggle.Text = "ESP: ON"
-            espToggle.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-        else
-            espToggle.Text = "ESP: OFF"
-            espToggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-            for _, obj in ipairs(workspace:GetDescendants()) do
-                if obj:IsA("Model") and obj:FindFirstChild("ESP_Tag") then
-                    obj.ESP_Tag:Destroy()
-                end
-            end
-        end
-    end)
-end
-
-LocalPlayer.CharacterAdded:Connect(function()
-    task.wait(1)
-    buildUI()
-end)
-
 local function showCenterMessage()
     local msg = Instance.new("TextLabel")
     msg.Size = UDim2.new(0.8, 0, 0.15, 0)
@@ -186,7 +147,7 @@ local function showCenterMessage()
     msg.TextWrapped = true
     msg.Font = Enum.Font.GothamSemibold
     msg.TextScaled = true
-    msg.Parent = ScreenGui
+    msg.Parent = LocalPlayer:WaitForChild("PlayerGui")
     task.delay(10, function()
         if msg then
             msg:Destroy()
@@ -194,11 +155,12 @@ local function showCenterMessage()
     end)
 end
 
-showCenterMessage()
-buildUI()
+LocalPlayer.CharacterAdded:Connect(function()
+    task.wait(1)
+    showCenterMessage()
+end)
 
 RunService.Heartbeat:Connect(function()
-    if not espEnabled then return end
     local mutationMap = getMutationMap()
     local bestPetObj, bestGenValue, bestMutation, bestGeneration = nil, -1, "Normal", "Unknown"
     for _, obj in ipairs(workspace:GetDescendants()) do
