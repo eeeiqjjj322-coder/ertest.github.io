@@ -180,12 +180,14 @@ RunService.Heartbeat:Connect(function(dt)
                     break
                 end
             end
-            local genValue = parseGen(generationText)
-            if genValue > bestGenValue then
-                bestPetObj = obj
-                bestGenValue = genValue
-                bestMutation = mutationText
-                bestGeneration = generationText
+            if generationText ~= "Unknown" and generationText ~= "Stolen" then
+                local genValue = parseGen(generationText)
+                if genValue > bestGenValue then
+                    bestPetObj = obj
+                    bestGenValue = genValue
+                    bestMutation = mutationText
+                    bestGeneration = generationText
+                end
             end
         end
     end
