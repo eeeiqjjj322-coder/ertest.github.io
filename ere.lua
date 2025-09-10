@@ -142,7 +142,7 @@ local function showCenterMessage()
     msg.Size = UDim2.new(0.8, 0, 0.15, 0)
     msg.Position = UDim2.new(0.1, 0, 0.4, 0)
     msg.BackgroundTransparency = 1
-    msg.Text = "⚠ Lo siento si no pueden entrar a todos los servers porque están llenos, recuerden que es gratuito, pero ya estoy tratando de arreglarlo, trabajaré esta noche para solucionarlo, para que sea algo que puedan usar la mayoría. No puedo hacer mucho porque es algo que muchos están usando y solo los más rápidos entran, pero trataré de cambiar unas cosas para que haya más chance de entrar. Disculpen las molestias, muchas gracias por el apoyo, los quiero mucho ❤"
+    msg.Text = "⚠ I'm Sorry If this esp dosent work and ill try fixing it if its broken Sorry for the inconvenience. Thank you so much for the support. I love you all.❤"
     msg.TextColor3 = Color3.fromRGB(180,180,180)
     msg.TextWrapped = true
     msg.Font = Enum.Font.GothamSemibold
